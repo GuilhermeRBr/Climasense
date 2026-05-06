@@ -7,7 +7,9 @@ backend/
 ├── src/
 │   ├── sensor/          # Sensor data reception module ✅
 │   │   ├── dto/
-│   │   │   └── sensor-data.dto.ts
+│   │   │   ├── sensor-data.dto.ts
+│   │   │   ├── sensor-response.dto.ts
+│   │   │   └── README.md
 │   │   ├── sensor.controller.ts
 │   │   ├── sensor.service.ts
 │   │   ├── sensor.module.ts
@@ -19,11 +21,12 @@ backend/
 │   │   ├── influx.service.ts
 │   │   └── README.md
 │   ├── app.module.ts    # Main application module
-│   └── main.ts          # Application entry point
+│   └── main.ts          # Application entry point (with Swagger) ✅
 ├── test/                # E2E tests
 ├── .env                 # Environment variables
 ├── .env.example         # Environment variables template
 ├── INFLUXDB_SETUP.md    # InfluxDB setup guide
+├── SWAGGER_DOCUMENTATION.md  # Swagger documentation guide ✅
 ├── TEST_EXAMPLES.md     # API testing examples
 └── package.json
 ```
@@ -31,16 +34,17 @@ backend/
 ## Modular Architecture
 
 Each module follows the structure:
-- **Controller**: Receives HTTP requests
+- **Controller**: Receives HTTP requests (documented with Swagger)
 - **Service**: Contains business logic
 - **Provider**: Integration with external services (e.g., InfluxDB)
+- **DTOs**: Data validation and API documentation
 
 ## Modules
 
 ### Sensor ✅
 Responsible for receiving data from ESP32/Mock devices.
 
-**Status:** Implemented
+**Status:** Implemented with Swagger documentation
 
 **Endpoints:**
 - `POST /dados` - Receive sensor data
@@ -52,11 +56,19 @@ Responsible for receiving data from ESP32/Mock devices.
 - Integration with InfluxService
 - Error handling and logging
 - Query filters (deviceId, time range)
+- **Swagger documentation** ✅
+- **Interactive API testing** ✅
 
 **Architecture:**
 ```
 SensorController → SensorService → InfluxService → InfluxDB
 ```
+
+**DTOs:**
+- `SensorDataDto`: Request validation
+- `SensorDataResponseDto`: Success response
+- `SensorReadingDto`: Historical reading
+- `ErrorResponseDto`: Error response
 
 ### Weather
 Historical weather data management.
@@ -114,6 +126,45 @@ PORT=3000
 **CORS:**
 - Enabled for frontend integration
 
+**Swagger:**
+- Endpoint: `/api/docs`
+- Interactive documentation
+- OpenAPI 3.0 specification
+- JSON export: `/api/docs-json`
+- YAML export: `/api/docs-yaml`
+
+## API Documentation
+
+### Swagger UI
+
+Access the interactive API documentation at:
+
+**URL:** `http://localhost:3000/api/docs`
+
+**Features:**
+- Complete endpoint listing
+- Request/response schemas
+- Interactive testing
+- Example payloads
+- HTTP status codes documentation
+
+**Tags:**
+- `sensor`: Sensor data endpoints
+- `weather`: Weather data endpoints (future)
+- `forecast`: Forecast endpoints (future)
+
+### Documentation Details
+
+**API Information:**
+- Title: ClimaSense API
+- Description: API para sistema de monitoramento climático com sensores IoT
+- Version: 1.0
+
+**Authentication (Future):**
+- Type: API Key
+- Header: X-API-Key
+- Location: header
+
 ## API Endpoints
 
 ### POST /dados
@@ -137,6 +188,13 @@ Receive sensor data from devices.
 }
 ```
 
+**Swagger Documentation:**
+- ✅ Request body schema
+- ✅ Response schemas (201, 400, 500)
+- ✅ Field validations
+- ✅ Examples
+- ✅ Descriptions
+
 ### GET /dados
 Get historical sensor data.
 
@@ -156,6 +214,12 @@ Get historical sensor data.
 ]
 ```
 
+**Swagger Documentation:**
+- ✅ Query parameters
+- ✅ Response schema
+- ✅ Examples
+- ✅ Descriptions
+
 ### GET /dados/latest
 Get latest reading for a device.
 
@@ -172,22 +236,68 @@ Get latest reading for a device.
 }
 ```
 
+**Swagger Documentation:**
+- ✅ Query parameters
+- ✅ Response schemas (200, 400, 500)
+- ✅ Examples
+- ✅ Descriptions
+
 ## Testing
 
-See `TEST_EXAMPLES.md` for detailed testing examples with:
+### Interactive Testing (Swagger UI)
+
+1. Access: `http://localhost:3000/api/docs`
+2. Expand endpoint
+3. Click "Try it out"
+4. Fill in data
+5. Click "Execute"
+6. View response
+
+### Manual Testing
+
+See `TEST_EXAMPLES.md` for:
 - cURL commands
 - PowerShell scripts
 - Postman collection
 - Load testing scripts
 - Validation testing
 
+### Export Documentation
+
+- **JSON**: `http://localhost:3000/api/docs-json`
+- **YAML**: `http://localhost:3000/api/docs-yaml`
+
+## Development
+
+### Running the Application
+
+```bash
+# Development mode
+npm run start:dev
+
+# Production mode
+npm run start:prod
+
+# Build
+npm run build
+```
+
+### Accessing Services
+
+- **API**: `http://localhost:3000`
+- **Swagger Docs**: `http://localhost:3000/api/docs`
+- **InfluxDB UI**: `http://localhost:8086`
+
 ## Next Steps
 
 - [x] Configure InfluxDB ✅
 - [x] Implement Sensor endpoints ✅
 - [x] Add validations ✅
+- [x] Add Swagger documentation ✅
 - [ ] Implement API Key Guard
 - [ ] Implement Forecast module
 - [ ] Add error handling middleware
 - [ ] Add request logging
 - [ ] Add rate limiting
+- [ ] Document Weather endpoints
+- [ ] Document Forecast endpoints

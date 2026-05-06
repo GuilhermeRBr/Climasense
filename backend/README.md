@@ -1,98 +1,266 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# ClimaSense Backend
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API RESTful para sistema de monitoramento climático com sensores IoT.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Visão Geral
 
-## Description
+Backend desenvolvido com NestJS que recebe dados de sensores ESP32, armazena em banco de dados time-series (InfluxDB) e disponibiliza endpoints para consulta e visualização.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Tecnologias
 
-## Project setup
+- **NestJS** - Framework Node.js progressivo
+- **TypeScript** - Linguagem com tipagem estática
+- **InfluxDB** - Banco de dados time-series
+- **Swagger** - Documentação interativa da API
+- **class-validator** - Validação de dados
+- **Docker** - Containerização do InfluxDB
+
+## Início Rápido
+
+### 1. Instalar dependências
 
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
+### 2. Iniciar InfluxDB
 
 ```bash
-# development
-$ npm run start
+# Windows
+start-influxdb.bat
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Linux/Mac
+bash start-influxdb.sh
 ```
 
-## Run tests
+### 3. Iniciar o backend
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run start:dev
 ```
 
-## Deployment
+### 4. Acessar documentação
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+Abra o navegador em: `http://localhost:3000/api/docs`
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+## Documentação
+
+### Guias Principais
+
+- **[QUICK_START.md](QUICK_START.md)** - Guia rápido de início
+- **[SWAGGER_DOCUMENTATION.md](SWAGGER_DOCUMENTATION.md)** - Documentação completa do Swagger
+- **[STRUCTURE.md](STRUCTURE.md)** - Estrutura do projeto e arquitetura
+
+### Documentação dos Módulos
+
+- **[src/sensor/README.md](src/sensor/README.md)** - Módulo de sensores
+- **[src/influx/README.md](src/influx/README.md)** - Módulo InfluxDB
+- **[src/sensor/dto/README.md](src/sensor/dto/README.md)** - DTOs e validações
+
+## Endpoints Disponíveis
+
+### POST /dados
+Receber dados dos sensores
+
+**Request:**
+```json
+{
+  "deviceId": "esp32_01",
+  "temperatura": 25.5,
+  "umidade": 60.2,
+  "timestamp": "2026-05-06T10:30:00.000Z"
+}
+```
+
+### GET /dados
+Consultar dados históricos
+
+**Query params:**
+- `deviceId` (opcional): Filtrar por dispositivo
+- `range` (opcional): Período (padrão: -24h)
+
+### GET /dados/latest
+Obter última leitura de um dispositivo
+
+**Query params:**
+- `deviceId` (obrigatório): Identificador do dispositivo
+
+## Swagger UI
+
+Documentação interativa disponível em:
+
+**URL:** `http://localhost:3000/api/docs`
+
+**Recursos:**
+- Teste interativo de endpoints
+- Schemas de dados
+- Exemplos de requests/responses
+- Códigos de status HTTP
+- Validações documentadas
+
+## Arquitetura
+
+```
+Controller → Service → Provider (InfluxDB)
+```
+
+### Módulos Implementados
+
+- ✅ **Sensor** - Recepção e consulta de dados
+- ✅ **Influx** - Integração com InfluxDB
+- ✅ **Swagger** - Documentação interativa
+- ⏳ **Weather** - Dados climáticos (futuro)
+- ⏳ **Forecast** - Previsão do tempo (futuro)
+
+## Configuração
+
+### Variáveis de Ambiente (.env)
+
+```env
+INFLUXDB_URL=http://localhost:8086
+INFLUXDB_TOKEN=dev-token-change-in-production
+INFLUXDB_ORG=climasense
+INFLUXDB_BUCKET=sensor-data
+API_KEY=dev-api-key-change-in-production
+PORT=3000
+```
+
+## Scripts Disponíveis
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Desenvolvimento (hot-reload)
+npm run start:dev
+
+# Build
+npm run build
+
+# Produção
+npm run start:prod
+
+# Lint
+npm run lint
+
+# Format
+npm run format
+
+# Tests
+npm run test
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## Estrutura de Pastas
 
-## Resources
+```
+backend/
+├── src/
+│   ├── sensor/          # Módulo de sensores
+│   │   ├── dto/         # Data Transfer Objects
+│   │   ├── sensor.controller.ts
+│   │   ├── sensor.service.ts
+│   │   └── sensor.module.ts
+│   ├── influx/          # Módulo InfluxDB
+│   │   ├── influx.service.ts
+│   │   └── influx.module.ts
+│   ├── weather/         # Módulo weather (futuro)
+│   ├── forecast/        # Módulo forecast (futuro)
+│   ├── app.module.ts
+│   └── main.ts
+├── test/
+├── .env
+├── QUICK_START.md
+├── SWAGGER_DOCUMENTATION.md
+└── STRUCTURE.md
+```
 
-Check out a few resources that may come in handy when working with NestJS:
+## Validações
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+Todas as requisições são validadas automaticamente:
 
-## Support
+- **deviceId**: string obrigatória
+- **temperatura**: número obrigatório (-50 a 100°C)
+- **umidade**: número obrigatório (0 a 100%)
+- **timestamp**: string ISO 8601 obrigatória
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Testes
 
-## Stay in touch
+### Teste Rápido com cURL
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+curl -X POST http://localhost:3000/dados \
+  -H "Content-Type: application/json" \
+  -d '{
+    "deviceId": "esp32_01",
+    "temperatura": 25.5,
+    "umidade": 60.2,
+    "timestamp": "2026-05-06T10:30:00.000Z"
+  }'
+```
 
-## License
+### Teste com Swagger UI
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+1. Acesse: `http://localhost:3000/api/docs`
+2. Expanda `POST /dados`
+3. Clique em "Try it out"
+4. Edite o JSON e clique em "Execute"
+
+## Recursos
+
+- **API**: `http://localhost:3000`
+- **Swagger**: `http://localhost:3000/api/docs`
+- **OpenAPI JSON**: `http://localhost:3000/api/docs-json`
+- **InfluxDB UI**: `http://localhost:8086`
+
+## Status do Projeto
+
+### Implementado ✅
+
+- [x] Estrutura modular NestJS
+- [x] Integração com InfluxDB
+- [x] Endpoints de sensores (POST, GET)
+- [x] Validação de dados com DTOs
+- [x] Documentação Swagger completa
+- [x] CORS habilitado
+- [x] Logging implementado
+- [x] Error handling
+
+### Próximas Etapas ⏳
+
+- [ ] API Key Guard
+- [ ] Módulo Forecast (Open-Meteo)
+- [ ] Módulo Weather
+- [ ] Rate limiting
+- [ ] Request logging middleware
+- [ ] Testes unitários
+- [ ] Testes E2E
+
+## Troubleshooting
+
+### Backend não inicia
+
+Verifique se a porta 3000 está disponível ou altere no `.env`
+
+### InfluxDB connection error
+
+Verifique se o InfluxDB está rodando:
+```bash
+docker ps | grep climasense-influxdb
+```
+
+### Swagger não carrega
+
+Limpe o cache do navegador e acesse: `http://localhost:3000/api/docs`
+
+## Suporte
+
+Para mais detalhes, consulte a documentação completa:
+
+- [QUICK_START.md](QUICK_START.md) - Guia de início
+- [SWAGGER_DOCUMENTATION.md](SWAGGER_DOCUMENTATION.md) - Swagger
+- [STRUCTURE.md](STRUCTURE.md) - Arquitetura
+
+## Licença
+
+Este projeto está em desenvolvimento.
+
+---
+
+**Desenvolvido com NestJS, TypeScript e boas práticas de Clean Code**
