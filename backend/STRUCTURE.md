@@ -15,7 +15,13 @@ backend/
 │   │   ├── sensor.module.ts
 │   │   └── README.md
 │   ├── weather/         # Weather data module
-│   ├── forecast/        # Weather forecast module (Open-Meteo)
+│   ├── forecast/        # Weather forecast module (Open-Meteo) ✅
+│   │   ├── dto/
+│   │   │   ├── forecast-query.dto.ts
+│   │   │   └── forecast-response.dto.ts
+│   │   ├── forecast.controller.ts
+│   │   ├── forecast.service.ts
+│   │   └── forecast.module.ts
 │   ├── influx/          # InfluxDB integration module ✅
 │   │   ├── influx.module.ts
 │   │   ├── influx.service.ts
@@ -81,10 +87,33 @@ Historical weather data management.
 
 **Status:** Pending implementation
 
-### Forecast
+### Forecast ✅
 Integration with Open-Meteo external API for weather forecasts.
 
-**Status:** Pending implementation
+**Status:** Implemented
+
+**Endpoints:**
+- `GET /previsao` - Get weather forecast (Public)
+
+**Features:**
+- Integration with Open-Meteo API
+- Query validation (latitude, longitude, days)
+- Data transformation
+- Error handling
+- Weather code descriptions
+- Swagger documentation
+
+**Query Parameters:**
+- `latitude` (required): -90 to 90
+- `longitude` (required): -180 to 180
+- `days` (optional): 1 to 16 (default: 7)
+
+**Response:**
+- Daily forecasts
+- Temperature (max/min)
+- Precipitation
+- Wind speed
+- Weather code
 
 ### Influx ✅
 Provider for communication with InfluxDB time-series database.
@@ -255,6 +284,39 @@ Get latest reading for a device.
 - ✅ Examples
 - ✅ Descriptions
 
+### GET /previsao
+Get weather forecast for a location.
+
+**Query Params:**
+- `latitude` (required): Latitude (-90 to 90)
+- `longitude` (required): Longitude (-180 to 180)
+- `days` (optional): Number of forecast days (1-16, default: 7)
+
+**Response (200):**
+```json
+{
+  "latitude": -23.5505,
+  "longitude": -46.6333,
+  "timezone": "America/Sao_Paulo",
+  "daily": [
+    {
+      "date": "2026-05-06",
+      "temperatureMax": 28.5,
+      "temperatureMin": 18.2,
+      "precipitation": 2.5,
+      "windSpeed": 15.3,
+      "weatherCode": 3
+    }
+  ]
+}
+```
+
+**Swagger Documentation:**
+- ✅ Query parameters with validation
+- ✅ Response schema
+- ✅ Examples
+- ✅ Error responses (400, 502)
+
 ## Testing
 
 ### Interactive Testing (Swagger UI)
@@ -308,9 +370,9 @@ npm run build
 - [x] Add validations ✅
 - [x] Add Swagger documentation ✅
 - [x] Implement API Key Guard ✅
-- [ ] Implement Forecast module
+- [x] Implement Forecast module ✅
 - [ ] Add error handling middleware
 - [ ] Add request logging
 - [ ] Add rate limiting
 - [ ] Document Weather endpoints
-- [ ] Document Forecast endpoints
+- [ ] Implement Weather module
