@@ -96,6 +96,19 @@ Obter última leitura de um dispositivo
 **Query params:**
 - `deviceId` (obrigatório): Identificador do dispositivo
 
+### GET /previsao (Público)
+Obter previsão do tempo
+
+**Query params:**
+- `latitude` (obrigatório): Latitude da localização (-90 a 90)
+- `longitude` (obrigatório): Longitude da localização (-180 a 180)
+- `days` (opcional): Número de dias de previsão (1 a 16, padrão: 7)
+
+**Exemplo:**
+```bash
+curl "http://localhost:3000/previsao?latitude=-23.5505&longitude=-46.6333&days=7"
+```
+
 ## Swagger UI
 
 Documentação interativa disponível em:
@@ -120,8 +133,8 @@ Controller → Service → Provider (InfluxDB)
 - ✅ **Sensor** - Recepção e consulta de dados
 - ✅ **Influx** - Integração com InfluxDB
 - ✅ **Swagger** - Documentação interativa
+- ✅ **Forecast** - Previsão do tempo (Open-Meteo)
 - ⏳ **Weather** - Dados climáticos (futuro)
-- ⏳ **Forecast** - Previsão do tempo (futuro)
 
 ## Configuração
 
@@ -233,6 +246,7 @@ curl -X POST http://localhost:3000/dados \
 - [x] Logging implementado
 - [x] Error handling
 - [x] API Key Guard (proteção de endpoints)
+- [x] Integração com Open-Meteo API
 
 ### Próximas Etapas ⏳
 
