@@ -57,6 +57,46 @@ ESP32 → Backend (NestJS) → InfluxDB → Frontend (Next.js)
 
 O projeto está sendo desenvolvido de forma incremental, seguindo boas práticas de engenharia de software e arquitetura modular.
 
+## Como Executar
+
+### Backend
+
+```bash
+cd backend
+npm install
+npm run start:dev
+```
+
+Acesse a documentação da API: `http://localhost:3000/api/docs`
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Acesse a aplicação: `http://localhost:3001`
+
+### InfluxDB
+
+```bash
+# Windows
+start-influxdb.bat
+
+# Linux/Mac
+bash start-influxdb.sh
+```
+
+Acesse o InfluxDB UI: `http://localhost:8086`
+
+## Documentação
+
+- **Backend**: Ver `backend/README.md`
+- **Frontend**: Ver `frontend/README.md`
+- **API**: `http://localhost:3000/api/docs` (Swagger)
+
 ## Licença
 
 Este projeto está em desenvolvimento.
