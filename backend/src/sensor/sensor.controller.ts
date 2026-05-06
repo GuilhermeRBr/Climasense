@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Logger,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiTags,
@@ -17,6 +18,8 @@ import {
   ApiBody,
   ApiBadRequestResponse,
   ApiInternalServerErrorResponse,
+  ApiSecurity,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { SensorService } from './sensor.service';
 import { SensorDataDto } from './dto/sensor-data.dto';
@@ -25,9 +28,12 @@ import {
   SensorReadingDto,
   ErrorResponseDto,
 } from './dto/sensor-response.dto';
+import { ApiKeyGuard } from '../common/guards/api-key.guard';
+import { Public } from '../common/decorators/public.decorator';
 
 @ApiTags('sensor')
 @Controller('dados')
+@UseGuards(ApiKeyGuard)
 export class SensorController {
   private readonly logger = new Logger(SensorController.name);
 
@@ -35,10 +41,11 @@ export class SensorController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @ApiSecurity('api-key')
   @ApiOperation({
     summary: 'Receber dados dos sensores',
     description:
-      'Endpoint para recepção de dados de temperatura e umidade dos dispositivos ESP32/Mock. Os dados são validados e armazenados no InfluxDB.',
+      'Endpoint para recepção de dados de temperatura e umidade dos dispositivos ESP32/Mock. Os dados são validados e armazenados no InfluxDB. Requer autenticação via API Key no header X-API-Key.',
   })
   @ApiBody({
     type: SensorDataDto,
@@ -53,6 +60,17 @@ export class SensorController {
     description: 'Dados inválidos ou campos obrigatórios ausentes',
     type: ErrorResponseDto,
   })
+  @ApiUnauthorizedResponse({
+    description: 'API Key ausente ou inválida',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string', example: 'API Key is required' },
+        error: { type: 'string', example: 'Unauthorized' },
+      },
+    },
+  })
   @ApiInternalServerErrorResponse({
     description: 'Erro interno ao processar ou armazenar os dados',
   })
@@ -64,10 +82,11 @@ export class SensorController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({
     summary: 'Consultar dados históricos',
     description:
-      'Retorna dados históricos dos sensores com possibilidade de filtrar por dispositivo e período de tempo.',
+      'Retorna dados históricos dos sensores com possibilidade de filtrar por dispositivo e período de tempo. Endpoint público, não requer autenticação.',
   })
   @ApiQuery({
     name: 'deviceId',
@@ -101,10 +120,11 @@ export class SensorController {
   }
 
   @Get('latest')
+  @Public()
   @ApiOperation({
     summary: 'Obter última leitura',
     description:
-      'Retorna a leitura mais recente de um dispositivo específico.',
+      'Retorna a leitura mais recente de um dispositivo específico. Endpoint público, não requer autenticação.',
   })
   @ApiQuery({
     name: 'deviceId',
