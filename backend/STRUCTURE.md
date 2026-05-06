@@ -20,6 +20,11 @@ backend/
 │   │   ├── influx.module.ts
 │   │   ├── influx.service.ts
 │   │   └── README.md
+│   ├── common/          # Common utilities ✅
+│   │   ├── guards/
+│   │   │   └── api-key.guard.ts
+│   │   └── decorators/
+│   │       └── public.decorator.ts
 │   ├── app.module.ts    # Main application module
 │   └── main.ts          # Application entry point (with Swagger) ✅
 ├── test/                # E2E tests
@@ -44,12 +49,12 @@ Each module follows the structure:
 ### Sensor ✅
 Responsible for receiving data from ESP32/Mock devices.
 
-**Status:** Implemented with Swagger documentation
+**Status:** Implemented with Swagger documentation and API Key protection
 
 **Endpoints:**
-- `POST /dados` - Receive sensor data
-- `GET /dados` - Get historical data
-- `GET /dados/latest` - Get latest reading
+- `POST /dados` - Receive sensor data (Protected with API Key)
+- `GET /dados` - Get historical data (Public)
+- `GET /dados/latest` - Get latest reading (Public)
 
 **Features:**
 - DTO validation with class-validator
@@ -58,6 +63,7 @@ Responsible for receiving data from ESP32/Mock devices.
 - Query filters (deviceId, time range)
 - **Swagger documentation** ✅
 - **Interactive API testing** ✅
+- **API Key Guard protection** ✅
 
 **Architecture:**
 ```
@@ -132,6 +138,13 @@ PORT=3000
 - OpenAPI 3.0 specification
 - JSON export: `/api/docs-json`
 - YAML export: `/api/docs-yaml`
+
+**Security:**
+- API Key Guard implemented
+- POST /dados protected
+- GET endpoints public
+- Header: X-API-Key
+- Configured via environment variable
 
 ## API Documentation
 
@@ -294,7 +307,7 @@ npm run build
 - [x] Implement Sensor endpoints ✅
 - [x] Add validations ✅
 - [x] Add Swagger documentation ✅
-- [ ] Implement API Key Guard
+- [x] Implement API Key Guard ✅
 - [ ] Implement Forecast module
 - [ ] Add error handling middleware
 - [ ] Add request logging

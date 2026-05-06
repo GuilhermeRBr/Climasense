@@ -47,9 +47,10 @@ Abra o navegador em: `http://localhost:3000/api/docs`
 
 ### Guias Principais
 
-- **[QUICK_START.md](QUICK_START.md)** - Guia rápido de início
-- **[SWAGGER_DOCUMENTATION.md](SWAGGER_DOCUMENTATION.md)** - Documentação completa do Swagger
+- **[README.md](README.md)** - Este arquivo
 - **[STRUCTURE.md](STRUCTURE.md)** - Estrutura do projeto e arquitetura
+- **[SECURITY.md](SECURITY.md)** - Implementação de segurança e API Key
+- **[API_KEY_EXAMPLES.md](API_KEY_EXAMPLES.md)** - Exemplos de uso com API Key
 
 ### Documentação dos Módulos
 
@@ -59,8 +60,10 @@ Abra o navegador em: `http://localhost:3000/api/docs`
 
 ## Endpoints Disponíveis
 
-### POST /dados
+### POST /dados (Protegido)
 Receber dados dos sensores
+
+**Autenticação**: API Key obrigatória (header `X-API-Key`)
 
 **Request:**
 ```json
@@ -72,14 +75,22 @@ Receber dados dos sensores
 }
 ```
 
-### GET /dados
+**cURL:**
+```bash
+curl -X POST http://localhost:3000/dados \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: dev-api-key-change-in-production" \
+  -d '{"deviceId":"esp32_01","temperatura":25.5,"umidade":60.2,"timestamp":"2026-05-06T10:30:00.000Z"}'
+```
+
+### GET /dados (Público)
 Consultar dados históricos
 
 **Query params:**
 - `deviceId` (opcional): Filtrar por dispositivo
 - `range` (opcional): Período (padrão: -24h)
 
-### GET /dados/latest
+### GET /dados/latest (Público)
 Obter última leitura de um dispositivo
 
 **Query params:**
@@ -221,6 +232,7 @@ curl -X POST http://localhost:3000/dados \
 - [x] CORS habilitado
 - [x] Logging implementado
 - [x] Error handling
+- [x] API Key Guard (proteção de endpoints)
 
 ### Próximas Etapas ⏳
 
