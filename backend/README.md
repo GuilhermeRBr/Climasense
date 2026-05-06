@@ -41,7 +41,7 @@ npm run start:dev
 
 ### 4. Acessar documentação
 
-Abra o navegador em: `http://localhost:3000/api/docs`
+Abra o navegador em: `http://localhost:21165/api/docs`
 
 ## Documentação
 
@@ -77,7 +77,7 @@ Receber dados dos sensores
 
 **cURL:**
 ```bash
-curl -X POST http://localhost:3000/dados \
+curl -X POST http://localhost:21165/dados \
   -H "Content-Type: application/json" \
   -H "X-API-Key: dev-api-key-change-in-production" \
   -d '{"deviceId":"esp32_01","temperatura":25.5,"umidade":60.2,"timestamp":"2026-05-06T10:30:00.000Z"}'
@@ -106,14 +106,14 @@ Obter previsão do tempo
 
 **Exemplo:**
 ```bash
-curl "http://localhost:3000/previsao?latitude=-23.5505&longitude=-46.6333&days=7"
+curl "http://localhost:21165/previsao?latitude=-23.5505&longitude=-46.6333&days=7"
 ```
 
 ## Swagger UI
 
 Documentação interativa disponível em:
 
-**URL:** `http://localhost:3000/api/docs`
+**URL:** `http://localhost:21165/api/docs`
 
 **Recursos:**
 - Teste interativo de endpoints
@@ -146,7 +146,7 @@ INFLUXDB_TOKEN=dev-token-change-in-production
 INFLUXDB_ORG=climasense
 INFLUXDB_BUCKET=sensor-data
 API_KEY=dev-api-key-change-in-production
-PORT=3000
+PORT=21165
 ```
 
 ## Scripts Disponíveis
@@ -209,7 +209,7 @@ Todas as requisições são validadas automaticamente:
 ### Teste Rápido com cURL
 
 ```bash
-curl -X POST http://localhost:3000/dados \
+curl -X POST http://localhost:21165/dados \
   -H "Content-Type: application/json" \
   -d '{
     "deviceId": "esp32_01",
@@ -221,16 +221,16 @@ curl -X POST http://localhost:3000/dados \
 
 ### Teste com Swagger UI
 
-1. Acesse: `http://localhost:3000/api/docs`
+1. Acesse: `http://localhost:21165/api/docs`
 2. Expanda `POST /dados`
 3. Clique em "Try it out"
 4. Edite o JSON e clique em "Execute"
 
 ## Recursos
 
-- **API**: `http://localhost:3000`
-- **Swagger**: `http://localhost:3000/api/docs`
-- **OpenAPI JSON**: `http://localhost:3000/api/docs-json`
+- **API**: `http://localhost:21165`
+- **Swagger**: `http://localhost:21165/api/docs`
+- **OpenAPI JSON**: `http://localhost:21165/api/docs-json`
 - **InfluxDB UI**: `http://localhost:8086`
 
 ## Status do Projeto
@@ -262,7 +262,7 @@ curl -X POST http://localhost:3000/dados \
 
 ### Backend não inicia
 
-Verifique se a porta 3000 está disponível ou altere no `.env`
+Verifique se a porta 21165 está disponível ou altere no `.env`
 
 ### InfluxDB connection error
 
@@ -273,7 +273,7 @@ docker ps | grep climasense-influxdb
 
 ### Swagger não carrega
 
-Limpe o cache do navegador e acesse: `http://localhost:3000/api/docs`
+Limpe o cache do navegador e acesse: `http://localhost:21165/api/docs`
 
 ## Suporte
 

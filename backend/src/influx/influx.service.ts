@@ -117,11 +117,12 @@ export class InfluxService implements OnModuleInit {
     try {
       const fluxQuery = `
         from(bucket: "${this.bucket}")
-          |> range(start: -1h)
+          |> range(start: -7d)
           |> filter(fn: (r) => r._measurement == "sensor_data")
           |> filter(fn: (r) => r.device_id == "${deviceId}")
           |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
-          |> last()
+          |> sort(columns: ["_time"], desc: true)
+          |> limit(n: 1)
       `;
 
       return new Promise((resolve, reject) => {

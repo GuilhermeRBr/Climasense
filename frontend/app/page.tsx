@@ -24,7 +24,13 @@ export default function Dashboard() {
 
         setData(historicalData);
         setLatestReading(latest);
+        
+        // If no latest reading but we have historical data, use the most recent
+        if (!latest && historicalData.length > 0) {
+          setLatestReading(historicalData[historicalData.length - 1]);
+        }
       } catch (err) {
+        console.error('Error fetching data:', err);
         setError(err instanceof Error ? err.message : 'Failed to fetch data');
       } finally {
         setLoading(false);

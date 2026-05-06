@@ -92,7 +92,7 @@ python -c "import secrets; print(secrets.token_hex(32))"
 ### cURL
 
 ```bash
-curl -X POST http://localhost:3000/dados \
+curl -X POST http://localhost:21165/dados \
   -H "Content-Type: application/json" \
   -H "X-API-Key: sua-api-key" \
   -d '{"deviceId":"esp32_01","temperatura":25.5,"umidade":60.2,"timestamp":"2026-05-06T10:30:00.000Z"}'
@@ -206,7 +206,7 @@ http.addHeader("X-API-Key", "sua-api-key");
 ### Teste 1: Requisição com API Key válida
 
 ```bash
-curl -X POST http://localhost:3000/dados \
+curl -X POST http://localhost:21165/dados \
   -H "X-API-Key: dev-api-key-change-in-production" \
   -H "Content-Type: application/json" \
   -d '{"deviceId":"test","temperatura":25,"umidade":60,"timestamp":"2026-05-06T10:00:00.000Z"}'
@@ -217,7 +217,7 @@ curl -X POST http://localhost:3000/dados \
 ### Teste 2: Requisição sem API Key
 
 ```bash
-curl -X POST http://localhost:3000/dados \
+curl -X POST http://localhost:21165/dados \
   -H "Content-Type: application/json" \
   -d '{"deviceId":"test","temperatura":25,"umidade":60,"timestamp":"2026-05-06T10:00:00.000Z"}'
 ```
@@ -227,7 +227,7 @@ curl -X POST http://localhost:3000/dados \
 ### Teste 3: Requisição com API Key inválida
 
 ```bash
-curl -X POST http://localhost:3000/dados \
+curl -X POST http://localhost:21165/dados \
   -H "X-API-Key: wrong-key" \
   -H "Content-Type: application/json" \
   -d '{"deviceId":"test","temperatura":25,"umidade":60,"timestamp":"2026-05-06T10:00:00.000Z"}'
@@ -238,7 +238,7 @@ curl -X POST http://localhost:3000/dados \
 ### Teste 4: Endpoint público (GET)
 
 ```bash
-curl http://localhost:3000/dados
+curl http://localhost:21165/dados
 ```
 
 **Esperado**: 200 OK (sem API Key necessária)
