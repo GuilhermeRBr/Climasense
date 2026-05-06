@@ -59,27 +59,7 @@ O projeto está sendo desenvolvido de forma incremental, seguindo boas práticas
 
 ## Como Executar
 
-### Backend
-
-```bash
-cd backend
-npm install
-npm run start:dev
-```
-
-Acesse a documentação da API: `http://localhost:3000/api/docs`
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Acesse a aplicação: `http://localhost:3001`
-
-### InfluxDB
+### Passo 1: Iniciar InfluxDB
 
 ```bash
 # Windows
@@ -89,13 +69,58 @@ start-influxdb.bat
 bash start-influxdb.sh
 ```
 
-Acesse o InfluxDB UI: `http://localhost:8086`
+### Passo 2: Iniciar Backend
+
+```bash
+cd backend
+npm install
+npm run start:dev
+```
+
+Acesse a documentação da API: `http://localhost:21165/api/docs`
+
+### Passo 3: Enviar Dados de Teste
+
+**IMPORTANTE**: O banco de dados está vazio inicialmente. Envie dados de teste:
+
+```bash
+# Windows PowerShell
+powershell -ExecutionPolicy Bypass -File send-test-data.ps1
+```
+
+Isso enviará 10 leituras de teste para o banco de dados.
+
+### Passo 4: Iniciar Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Acesse a aplicação: `http://localhost:3001`
+
+### Passo 5: Verificar
+
+- Dashboard deve mostrar dados de temperatura e umidade
+- Tabela com histórico das últimas 24 horas
+- Página de previsão deve funcionar imediatamente
+
+## Troubleshooting
+
+Se o dashboard mostrar "Carregando dados..." mas não carregar:
+
+1. **Envie dados de teste**: `powershell -ExecutionPolicy Bypass -File send-test-data.ps1`
+2. **Reinicie o frontend**: Pare (Ctrl+C) e inicie novamente com `npm run dev`
+3. **Atualize o navegador**: Ctrl+Shift+R (hard refresh)
+
+Ver `QUICK_FIX.md` para solução rápida ou `TROUBLESHOOTING.md` para guia completo.
 
 ## Documentação
 
 - **Backend**: Ver `backend/README.md`
 - **Frontend**: Ver `frontend/README.md`
-- **API**: `http://localhost:3000/api/docs` (Swagger)
+- **API**: `http://localhost:21165/api/docs` (Swagger)
 
 ## Licença
 

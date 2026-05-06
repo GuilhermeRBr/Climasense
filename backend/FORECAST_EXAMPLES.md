@@ -34,19 +34,19 @@ Retorna a previsão do tempo para uma localização específica usando a API Ope
 ### cURL - São Paulo (7 dias)
 
 ```bash
-curl "http://localhost:3000/previsao?latitude=-23.5505&longitude=-46.6333&days=7"
+curl "http://localhost:21165/previsao?latitude=-23.5505&longitude=-46.6333&days=7"
 ```
 
 ### cURL - Rio de Janeiro (3 dias)
 
 ```bash
-curl "http://localhost:3000/previsao?latitude=-22.9068&longitude=-43.1729&days=3"
+curl "http://localhost:21165/previsao?latitude=-22.9068&longitude=-43.1729&days=3"
 ```
 
 ### cURL - Brasília (14 dias)
 
 ```bash
-curl "http://localhost:3000/previsao?latitude=-15.7939&longitude=-47.8828&days=14"
+curl "http://localhost:21165/previsao?latitude=-15.7939&longitude=-47.8828&days=14"
 ```
 
 ### PowerShell
@@ -59,7 +59,7 @@ $params = @{
 }
 
 $query = ($params.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "&"
-$url = "http://localhost:3000/previsao?$query"
+$url = "http://localhost:21165/previsao?$query"
 
 Invoke-RestMethod -Uri $url -Method Get
 ```
@@ -71,7 +71,7 @@ const axios = require('axios');
 
 const getForecast = async (latitude, longitude, days = 7) => {
   try {
-    const response = await axios.get('http://localhost:3000/previsao', {
+    const response = await axios.get('http://localhost:21165/previsao', {
       params: { latitude, longitude, days }
     });
     
@@ -92,7 +92,7 @@ getForecast(-23.5505, -46.6333, 7);
 import requests
 
 def get_forecast(latitude, longitude, days=7):
-    url = "http://localhost:3000/previsao"
+    url = "http://localhost:21165/previsao"
     params = {
         "latitude": latitude,
         "longitude": longitude,
@@ -206,34 +206,34 @@ Código WMO do clima (ver tabela abaixo)
 
 ```bash
 # São Paulo
-curl "http://localhost:3000/previsao?latitude=-23.5505&longitude=-46.6333"
+curl "http://localhost:21165/previsao?latitude=-23.5505&longitude=-46.6333"
 
 # Rio de Janeiro
-curl "http://localhost:3000/previsao?latitude=-22.9068&longitude=-43.1729"
+curl "http://localhost:21165/previsao?latitude=-22.9068&longitude=-43.1729"
 
 # Brasília
-curl "http://localhost:3000/previsao?latitude=-15.7939&longitude=-47.8828"
+curl "http://localhost:21165/previsao?latitude=-15.7939&longitude=-47.8828"
 
 # Salvador
-curl "http://localhost:3000/previsao?latitude=-12.9714&longitude=-38.5014"
+curl "http://localhost:21165/previsao?latitude=-12.9714&longitude=-38.5014"
 
 # Fortaleza
-curl "http://localhost:3000/previsao?latitude=-3.7172&longitude=-38.5433"
+curl "http://localhost:21165/previsao?latitude=-3.7172&longitude=-38.5433"
 
 # Belo Horizonte
-curl "http://localhost:3000/previsao?latitude=-19.9167&longitude=-43.9345"
+curl "http://localhost:21165/previsao?latitude=-19.9167&longitude=-43.9345"
 
 # Manaus
-curl "http://localhost:3000/previsao?latitude=-3.1190&longitude=-60.0217"
+curl "http://localhost:21165/previsao?latitude=-3.1190&longitude=-60.0217"
 
 # Curitiba
-curl "http://localhost:3000/previsao?latitude=-25.4284&longitude=-49.2733"
+curl "http://localhost:21165/previsao?latitude=-25.4284&longitude=-49.2733"
 
 # Recife
-curl "http://localhost:3000/previsao?latitude=-8.0476&longitude=-34.8770"
+curl "http://localhost:21165/previsao?latitude=-8.0476&longitude=-34.8770"
 
 # Porto Alegre
-curl "http://localhost:3000/previsao?latitude=-30.0346&longitude=-51.2177"
+curl "http://localhost:21165/previsao?latitude=-30.0346&longitude=-51.2177"
 ```
 
 ## Erros
@@ -275,7 +275,7 @@ curl "http://localhost:3000/previsao?latitude=-30.0346&longitude=-51.2177"
 
 ### Testando no Swagger
 
-1. Acesse: `http://localhost:3000/api/docs`
+1. Acesse: `http://localhost:21165/api/docs`
 2. Expanda `GET /previsao`
 3. Clique em "Try it out"
 4. Preencha os parâmetros:
@@ -316,7 +316,7 @@ const useForecast = (latitude: number, longitude: number, days: number = 7) => {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://localhost:3000/previsao?latitude=${latitude}&longitude=${longitude}&days=${days}`
+          `http://localhost:21165/previsao?latitude=${latitude}&longitude=${longitude}&days=${days}`
         );
         
         if (!response.ok) {

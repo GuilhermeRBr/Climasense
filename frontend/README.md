@@ -42,7 +42,7 @@ frontend/
 Crie um arquivo `.env.local`:
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:21165
 ```
 
 ## Instalacao
@@ -154,7 +154,7 @@ npm run lint
 ## Requisitos
 
 - Node.js 18+
-- Backend rodando em http://localhost:3000
+- Backend rodando em http://localhost:21165
 
 ## Troubleshooting
 

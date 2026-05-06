@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:21165';
 
 export interface SensorData {
   deviceId: string;
@@ -52,7 +52,14 @@ export const api = {
       throw new Error('Failed to fetch latest reading');
     }
     
-    return response.json();
+    const data = await response.json();
+    
+    // Check if data is empty or null
+    if (!data || Object.keys(data).length === 0) {
+      return null;
+    }
+    
+    return data;
   },
 
   async getForecast(latitude: number, longitude: number, days: number = 7): Promise<ForecastData> {

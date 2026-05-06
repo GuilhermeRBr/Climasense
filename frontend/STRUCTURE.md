@@ -116,7 +116,7 @@ User → Page Component → API Service → Backend API
 ### Environment Variables
 
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:21165
 ```
 
 ### Next.js Config

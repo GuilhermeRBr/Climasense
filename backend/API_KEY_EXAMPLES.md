@@ -28,7 +28,7 @@ Público (não requer API Key)
 ### cURL - Com API Key (Sucesso)
 
 ```bash
-curl -X POST http://localhost:3000/dados \
+curl -X POST http://localhost:21165/dados \
   -H "Content-Type: application/json" \
   -H "X-API-Key: dev-api-key-change-in-production" \
   -d '{
@@ -55,7 +55,7 @@ curl -X POST http://localhost:3000/dados \
 ### cURL - Sem API Key (Erro)
 
 ```bash
-curl -X POST http://localhost:3000/dados \
+curl -X POST http://localhost:21165/dados \
   -H "Content-Type: application/json" \
   -d '{
     "deviceId": "esp32_01",
@@ -77,7 +77,7 @@ curl -X POST http://localhost:3000/dados \
 ### cURL - API Key Inválida (Erro)
 
 ```bash
-curl -X POST http://localhost:3000/dados \
+curl -X POST http://localhost:21165/dados \
   -H "Content-Type: application/json" \
   -H "X-API-Key: wrong-key" \
   -d '{
@@ -112,7 +112,7 @@ $body = @{
     timestamp = "2026-05-06T10:30:00.000Z"
 } | ConvertTo-Json
 
-Invoke-RestMethod -Uri "http://localhost:3000/dados" `
+Invoke-RestMethod -Uri "http://localhost:21165/dados" `
   -Method Post `
   -Headers $headers `
   -Body $body
@@ -129,7 +129,7 @@ $body = @{
 } | ConvertTo-Json
 
 try {
-    Invoke-RestMethod -Uri "http://localhost:3000/dados" `
+    Invoke-RestMethod -Uri "http://localhost:21165/dados" `
       -Method Post `
       -ContentType "application/json" `
       -Body $body
@@ -143,7 +143,7 @@ try {
 
 ### Testando com API Key no Swagger
 
-1. Acesse: `http://localhost:3000/api/docs`
+1. Acesse: `http://localhost:21165/api/docs`
 2. Clique no botão **"Authorize"** no topo da página
 3. No campo **"api-key (apiKey)"**, insira: `dev-api-key-change-in-production`
 4. Clique em **"Authorize"**
@@ -165,7 +165,7 @@ try {
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
-const char* serverUrl = "http://your-server:3000/dados";
+const char* serverUrl = "http://your-server:21165/dados";
 const char* apiKey = "dev-api-key-change-in-production";
 
 void sendSensorData(float temp, float humidity) {
@@ -207,7 +207,7 @@ void sendSensorData(float temp, float humidity) {
 import requests
 from datetime import datetime
 
-url = "http://localhost:3000/dados"
+url = "http://localhost:21165/dados"
 headers = {
     "Content-Type": "application/json",
     "X-API-Key": "dev-api-key-change-in-production"
@@ -236,7 +236,7 @@ else:
 import requests
 from datetime import datetime
 
-url = "http://localhost:3000/dados"
+url = "http://localhost:21165/dados"
 headers = {
     "Content-Type": "application/json"
 }
@@ -262,7 +262,7 @@ const axios = require('axios');
 
 const sendData = async () => {
   try {
-    const response = await axios.post('http://localhost:3000/dados', {
+    const response = await axios.post('http://localhost:21165/dados', {
       deviceId: 'esp32_01',
       temperatura: 25.5,
       umidade: 60.2,

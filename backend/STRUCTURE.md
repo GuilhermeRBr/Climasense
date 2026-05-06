@@ -148,7 +148,7 @@ INFLUXDB_BUCKET=sensor-data
 
 # API
 API_KEY=your-api-key
-PORT=3000
+PORT=21165
 ```
 
 ### Global Configuration
@@ -181,7 +181,7 @@ PORT=3000
 
 Access the interactive API documentation at:
 
-**URL:** `http://localhost:3000/api/docs`
+**URL:** `http://localhost:21165/api/docs`
 
 **Features:**
 - Complete endpoint listing
@@ -321,7 +321,7 @@ Get weather forecast for a location.
 
 ### Interactive Testing (Swagger UI)
 
-1. Access: `http://localhost:3000/api/docs`
+1. Access: `http://localhost:21165/api/docs`
 2. Expand endpoint
 3. Click "Try it out"
 4. Fill in data
@@ -339,8 +339,8 @@ See `TEST_EXAMPLES.md` for:
 
 ### Export Documentation
 
-- **JSON**: `http://localhost:3000/api/docs-json`
-- **YAML**: `http://localhost:3000/api/docs-yaml`
+- **JSON**: `http://localhost:21165/api/docs-json`
+- **YAML**: `http://localhost:21165/api/docs-yaml`
 
 ## Development
 
@@ -359,8 +359,8 @@ npm run build
 
 ### Accessing Services
 
-- **API**: `http://localhost:3000`
-- **Swagger Docs**: `http://localhost:3000/api/docs`
+- **API**: `http://localhost:21165`
+- **Swagger Docs**: `http://localhost:21165/api/docs`
 - **InfluxDB UI**: `http://localhost:8086`
 
 ## Next Steps
