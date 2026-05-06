@@ -59,15 +59,9 @@ O projeto está sendo desenvolvido de forma incremental, seguindo boas práticas
 
 ## Como Executar
 
-### Passo 1: Iniciar InfluxDB
+### Passo 1: Configurar InfluxDB Cloud
 
-```bash
-# Windows
-start-influxdb.bat
-
-# Linux/Mac
-bash start-influxdb.sh
-```
+O projeto usa **InfluxDB Cloud**. As credenciais já estão configuradas em `backend/.env`.
 
 ### Passo 2: Iniciar Backend
 
@@ -79,18 +73,31 @@ npm run start:dev
 
 Acesse a documentação da API: `http://localhost:21165/api/docs`
 
-### Passo 3: Enviar Dados de Teste
+### Passo 3: Gerar Dados Mockados (Recomendado)
 
-**IMPORTANTE**: O banco de dados está vazio inicialmente. Envie dados de teste:
+Em um **novo terminal**, execute o gerador de dados mockados:
 
-```bash
-# Windows PowerShell
-powershell -ExecutionPolicy Bypass -File send-test-data.ps1
+**Windows:**
+```powershell
+.\mock-data-generator.ps1
 ```
 
-Isso enviará 10 leituras de teste para o banco de dados.
+**Linux/Mac:**
+```bash
+chmod +x mock-data-generator.sh
+./mock-data-generator.sh
+```
+
+O gerador enviará dados automaticamente a cada 10 segundos enquanto estiver rodando.
+
+**Ou envie 10 leituras de uma vez:**
+```powershell
+.\send-test-data.ps1
+```
 
 ### Passo 4: Iniciar Frontend
+
+Em um **terceiro terminal**:
 
 ```bash
 cd frontend
@@ -102,9 +109,27 @@ Acesse a aplicação: `http://localhost:3001`
 
 ### Passo 5: Verificar
 
-- Dashboard deve mostrar dados de temperatura e umidade
-- Tabela com histórico das últimas 24 horas
-- Página de previsão deve funcionar imediatamente
+- **Dashboard**: http://localhost:3001 - Dados de temperatura e umidade
+- **Previsão**: http://localhost:3001/previsao - Previsão do tempo
+- **API Swagger**: http://localhost:21165/api/docs - Documentação interativa
+- **InfluxDB Cloud**: https://cloud2.influxdata.com - Visualizar dados no banco
+
+## Gerador de Dados Mockados
+
+Para simular sensores IoT continuamente, use o gerador de dados mockados:
+
+```powershell
+# Intervalo padrão (10 segundos)
+.\mock-data-generator.ps1
+
+# Intervalo personalizado (5 segundos)
+.\mock-data-generator.ps1 -IntervalSeconds 5
+
+# Device ID personalizado
+.\mock-data-generator.ps1 -DeviceId "esp32_02"
+```
+
+Ver `MOCK_DATA_GUIDE.md` para guia completo.
 
 ## Troubleshooting
 

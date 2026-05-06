@@ -19,11 +19,20 @@ export class InfluxService implements OnModuleInit {
     this.org = this.configService.get<string>('INFLUXDB_ORG') || 'climasense';
     this.bucket = this.configService.get<string>('INFLUXDB_BUCKET') || 'sensor-data';
 
+    this.logger.log(`Initializing InfluxDB connection...`);
+    this.logger.log(`URL: ${url}`);
+    this.logger.log(`Org: ${this.org}`);
+    this.logger.log(`Bucket: ${this.bucket}`);
+
     this.influxDB = new InfluxDB({ url, token });
     this.writeApi = this.influxDB.getWriteApi(this.org, this.bucket);
+    
+    // Configure write options for better reliability
+    this.writeApi.useDefaultTags({ source: 'climasense-backend' });
+    
     this.queryApi = this.influxDB.getQueryApi(this.org);
 
-    this.logger.log('InfluxDB connection initialized');
+    this.logger.log('InfluxDB connection initialized successfully');
   }
 
   /**
@@ -40,18 +49,28 @@ export class InfluxService implements OnModuleInit {
     timestamp?: Date,
   ): Promise<void> {
     try {
+      const ts = timestamp || new Date();
+      
+      this.logger.log(`Writing data for device: ${deviceId}`);
+      this.logger.log(`  Temperature: ${temperatura}°C`);
+      this.logger.log(`  Humidity: ${umidade}%`);
+      this.logger.log(`  Timestamp: ${ts.toISOString()}`);
+
       const point = new Point('sensor_data')
         .tag('device_id', deviceId)
         .floatField('temperatura', temperatura)
         .floatField('umidade', umidade)
-        .timestamp(timestamp || new Date());
+        .timestamp(ts);
 
       this.writeApi.writePoint(point);
+      
+      // Force flush to ensure data is written immediately
       await this.writeApi.flush();
 
-      this.logger.log(`Data written for device: ${deviceId}`);
+      this.logger.log(`✓ Data successfully written to InfluxDB for device: ${deviceId}`);
     } catch (error) {
-      this.logger.error(`Error writing data: ${error.message}`);
+      this.logger.error(`✗ Error writing data to InfluxDB: ${error.message}`);
+      this.logger.error(`Stack trace: ${error.stack}`);
       throw error;
     }
   }
