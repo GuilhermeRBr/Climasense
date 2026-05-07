@@ -35,6 +35,41 @@ export class SensorReadingDto {
   umidade: number;
 
   @ApiProperty({
+    description: 'Pressão atmosférica em hPa',
+    example: 1013.25,
+    required: false,
+  })
+  pressao?: number;
+
+  @ApiProperty({
+    description: 'Velocidade do vento em km/h',
+    example: 12.5,
+    required: false,
+  })
+  velocidadeVento?: number;
+
+  @ApiProperty({
+    description: 'Direção do vento em graus',
+    example: 180,
+    required: false,
+  })
+  direcaoVento?: number;
+
+  @ApiProperty({
+    description: 'Precipitação de chuva em mm',
+    example: 2.5,
+    required: false,
+  })
+  chuva?: number;
+
+  @ApiProperty({
+    description: 'Luminosidade em porcentagem',
+    example: 75.0,
+    required: false,
+  })
+  luminosidade?: number;
+
+  @ApiProperty({
     description: 'Timestamp da leitura',
     example: '2026-05-06T10:30:00.000Z',
   })

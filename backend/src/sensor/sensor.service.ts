@@ -17,14 +17,17 @@ export class SensorService {
     try {
       this.logger.log(`Processing data from device: ${sensorData.deviceId}`);
 
-      // Convert ISO string to Date object
       const timestamp = new Date(sensorData.timestamp);
 
-      // Write to InfluxDB
       await this.influxService.writeSensorData(
         sensorData.deviceId,
         sensorData.temperatura,
         sensorData.umidade,
+        sensorData.pressao,
+        sensorData.velocidadeVento,
+        sensorData.direcaoVento,
+        sensorData.chuva,
+        sensorData.luminosidade,
         timestamp,
       );
 
