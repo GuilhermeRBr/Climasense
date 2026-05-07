@@ -69,6 +69,13 @@
   gap: 48px;
 }
 
+.panels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 32px;
+  width: 100%;
+}
+
 .loading-container {
   min-height: 100vh;
   display: flex;
@@ -93,5 +100,10 @@
   .main-content {
     gap: 32px;
     padding: 0 0 60px;
+  }
+
+  .panels-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 }

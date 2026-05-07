@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import AtmosphericHero from '@/components/weather/AtmosphericHero';
 import CurrentConditions from '@/components/weather/CurrentConditions';
 import WindPanel from '@/components/weather/WindPanel';
+import RainfallPanel from '@/components/weather/RainfallPanel';
+import LuminosityPanel from '@/components/weather/LuminosityPanel';
 import TemperatureChart from '@/components/charts/TemperatureChart';
 import HourlyForecast from '@/components/weather/HourlyForecast';
 import BackgroundParticles from '@/components/effects/BackgroundParticles';
@@ -16,6 +18,8 @@ import '@/styles/pages/home.css';
 import '@/styles/components/atmospheric-hero.css';
 import '@/styles/components/current-conditions.css';
 import '@/styles/components/wind-panel.css';
+import '@/styles/components/rainfall-panel.css';
+import '@/styles/components/luminosity-panel.css';
 
 export default function Home() {
   const [sensorData, setSensorData] = useState<SensorReading | null>(null);
@@ -152,6 +156,24 @@ export default function Home() {
               weatherTheme={weatherTheme}
             />
           </motion.div>
+
+          <div className="panels-grid">
+            <motion.div variants={itemVariants}>
+              <RainfallPanel
+                current={0}
+                dailyTotal={0}
+                intensity="none"
+                weatherTheme={weatherTheme}
+              />
+            </motion.div>
+
+            <motion.div variants={itemVariants}>
+              <LuminosityPanel
+                luminosity={75}
+                weatherTheme={weatherTheme}
+              />
+            </motion.div>
+          </div>
 
           <motion.div variants={itemVariants}>
             <TemperatureChart 
