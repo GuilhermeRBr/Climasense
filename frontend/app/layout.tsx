@@ -1,10 +1,9 @@
-import type { Metadata } from "next";
-import Header from "@/components/layout/Header";
-import "./globals.css";
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "ClimaSense - Sistema de Monitoramento Climatico",
-  description: "Sistema de monitoramento climatico em tempo real com sensores IoT",
+  title: 'ClimaSense - Monitoramento Climático',
+  description: 'Sistema de monitoramento climático em tempo real',
 };
 
 export default function RootLayout({
@@ -14,12 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body>
-        <Header />
-        <main className="main-container">
-          {children}
-        </main>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }

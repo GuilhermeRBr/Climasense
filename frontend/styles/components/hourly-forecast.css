@@ -1,0 +1,116 @@
+.forecast-section {
+  width: 100%;
+}
+
+.forecast-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+
+.forecast-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.forecast-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.forecast-container {
+  display: flex;
+  gap: 16px;
+  padding-bottom: 8px;
+}
+
+.forecast-card {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.forecast-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.forecast-day {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: capitalize;
+  opacity: 0.9;
+}
+
+.forecast-icon {
+  color: white;
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+}
+
+.forecast-temps {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.temp-max {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.temp-min {
+  color: white;
+  font-size: 16px;
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+.forecast-rain {
+  color: #4ECDC4;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  background: rgba(78, 205, 196, 0.2);
+  border-radius: 8px;
+}
+
+@media (max-width: 768px) {
+  .forecast-title {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .forecast-card {
+    min-width: 100px;
+    padding: 16px;
+  }
+
+  .forecast-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .temp-max {
+    font-size: 18px;
+  }
+
+  .temp-min {
+    font-size: 14px;
+  }
+}

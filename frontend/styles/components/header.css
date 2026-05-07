@@ -1,0 +1,51 @@
+.header {
+  padding: 24px 0;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.location,
+.time {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.icon {
+  opacity: 0.8;
+}
+
+.city-name,
+.current-time {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 16px 0;
+  }
+
+  .location,
+  .time {
+    font-size: 14px;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+}

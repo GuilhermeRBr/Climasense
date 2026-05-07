@@ -1,124 +1,117 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { api, SensorReading } from '@/services/api';
-import './page.css';
+import { motion } from 'framer-motion';
+import Header from '@/components/layout/Header';
+import HeroSection from '@/components/weather/HeroSection';
+import WeatherCards from '@/components/weather/WeatherCards';
+import TemperatureChart from '@/components/charts/TemperatureChart';
+import HourlyForecast from '@/components/weather/HourlyForecast';
+import { api, SensorReading, ForecastData } from '@/services/api';
+import '@/styles/pages/home.css';
 
-export default function Dashboard() {
-  const [data, setData] = useState<SensorReading[]>([]);
-  const [latestReading, setLatestReading] = useState<SensorReading | null>(null);
+export default function Home() {
+  const [sensorData, setSensorData] = useState<SensorReading | null>(null);
+  const [historicalData, setHistoricalData] = useState<SensorReading[]>([]);
+  const [forecast, setForecast] = useState<ForecastData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [deviceId] = useState('esp32_01');
+  const [weatherTheme, setWeatherTheme] = useState<'sunny' | 'cloudy' | 'rainy' | 'night'>('sunny');
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const [historicalData, latest] = await Promise.all([
-          api.getSensorData(deviceId, '-24h'),
-          api.getLatestReading(deviceId),
-        ]);
-
-        setData(historicalData);
-        setLatestReading(latest);
-        
-        // If no latest reading but we have historical data, use the most recent
-        if (!latest && historicalData.length > 0) {
-          setLatestReading(historicalData[historicalData.length - 1]);
-        }
-      } catch (err) {
-        console.error('Error fetching data:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
     const interval = setInterval(fetchData, 30000);
-
     return () => clearInterval(interval);
-  }, [deviceId]);
+  }, []);
+
+  useEffect(() => {
+    determineWeatherTheme();
+  }, [sensorData]);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+
+      const [latest, historical, forecastData] = await Promise.all([
+        api.getLatestReading('esp32_01'),
+        api.getSensorData('esp32_01', '-24h'),
+        api.getForecast(-23.5505, -46.6333, 7),
+      ]);
+
+      setSensorData(latest);
+      setHistoricalData(historical);
+      setForecast(forecastData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const determineWeatherTheme = () => {
+    if (!sensorData) return;
+
+    const hour = new Date().getHours();
+    const isNight = hour < 6 || hour > 20;
+
+    if (isNight) {
+      setWeatherTheme('night');
+      return;
+    }
+
+    // Simular condição climática baseada em umidade
+    if (sensorData.umidade > 80) {
+      setWeatherTheme('rainy');
+    } else if (sensorData.umidade > 60) {
+      setWeatherTheme('cloudy');
+    } else {
+      setWeatherTheme('sunny');
+    }
+  };
 
   if (loading) {
     return (
-      <div className="dashboard">
-        <h1>Dashboard</h1>
-        <div className="loading">Carregando dados...</div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="dashboard">
-        <h1>Dashboard</h1>
-        <div className="error">Erro: {error}</div>
+      <div className="loading-container">
+        <motion.div
+          className="loading-spinner"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+        />
       </div>
     );
   }
 
   return (
-    <div className="dashboard">
-      <h1>Dashboard</h1>
+    <div className={`home-container theme-${weatherTheme}`}>
+      <div className="background-gradient" />
+      <div className="content-wrapper">
+        <Header city="São Paulo" weatherTheme={weatherTheme} />
+        
+        <main className="main-content">
+          <HeroSection 
+            temperature={sensorData?.temperatura || 0}
+            condition="Parcialmente Nublado"
+            feelsLike={sensorData?.temperatura ? sensorData.temperatura - 2 : 0}
+            weatherTheme={weatherTheme}
+          />
 
-      {latestReading && (
-        <div className="latest-reading">
-          <h2>Leitura Atual</h2>
-          <div className="reading-cards">
-            <div className="reading-card">
-              <div className="reading-label">Temperatura</div>
-              <div className="reading-value">{latestReading.temperatura.toFixed(1)}°C</div>
-            </div>
-            <div className="reading-card">
-              <div className="reading-label">Umidade</div>
-              <div className="reading-value">{latestReading.umidade.toFixed(1)}%</div>
-            </div>
-            <div className="reading-card">
-              <div className="reading-label">Dispositivo</div>
-              <div className="reading-value device-id">{latestReading.deviceId}</div>
-            </div>
-          </div>
-          <div className="reading-timestamp">
-            Ultima atualizacao: {new Date(latestReading.timestamp).toLocaleString('pt-BR')}
-          </div>
-        </div>
-      )}
+          <WeatherCards 
+            humidity={sensorData?.umidade || 0}
+            luminosity={75}
+            rainfall={0}
+            sensorStatus="online"
+            weatherTheme={weatherTheme}
+          />
 
-      <div className="historical-data">
-        <h2>Dados Historicos (Ultimas 24h)</h2>
-        {data.length === 0 ? (
-          <div className="no-data">Nenhum dado disponivel</div>
-        ) : (
-          <div className="data-table-container">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Data/Hora</th>
-                  <th>Temperatura</th>
-                  <th>Umidade</th>
-                  <th>Dispositivo</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.slice(0, 20).map((reading, index) => (
-                  <tr key={index}>
-                    <td>{new Date(reading.timestamp).toLocaleString('pt-BR')}</td>
-                    <td>{reading.temperatura.toFixed(1)}°C</td>
-                    <td>{reading.umidade.toFixed(1)}%</td>
-                    <td>{reading.deviceId}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-        <div className="data-count">
-          Total de leituras: {data.length}
-        </div>
+          <TemperatureChart 
+            data={historicalData}
+            weatherTheme={weatherTheme}
+          />
+
+          <HourlyForecast 
+            forecast={forecast}
+            weatherTheme={weatherTheme}
+          />
+        </main>
       </div>
     </div>
   );
