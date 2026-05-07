@@ -9,6 +9,7 @@
 }
 
 .weather-card {
+  position: relative;
   backdrop-filter: blur(20px);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -16,6 +17,27 @@
   padding: 24px;
   transition: all 0.3s ease;
   cursor: pointer;
+  overflow: hidden;
+}
+
+.card-glow {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.weather-card:hover .card-glow {
+  opacity: 1;
 }
 
 .weather-card:hover {
@@ -25,6 +47,8 @@
 }
 
 .card-content {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -39,6 +63,7 @@
 .card-icon {
   color: white;
   opacity: 0.9;
+  transition: transform 0.3s ease;
 }
 
 .card-label {
@@ -60,22 +85,27 @@
 /* Color variations */
 .card-blue .card-icon {
   color: #4ECDC4;
+  filter: drop-shadow(0 0 8px rgba(78, 205, 196, 0.5));
 }
 
 .card-yellow .card-icon {
   color: #FFE66D;
+  filter: drop-shadow(0 0 8px rgba(255, 230, 109, 0.5));
 }
 
 .card-cyan .card-icon {
   color: #A8DADC;
+  filter: drop-shadow(0 0 8px rgba(168, 218, 220, 0.5));
 }
 
 .card-green .card-icon {
   color: #06FFA5;
+  filter: drop-shadow(0 0 8px rgba(6, 255, 165, 0.5));
 }
 
 .card-red .card-icon {
   color: #FF6B6B;
+  filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.5));
 }
 
 @media (max-width: 768px) {

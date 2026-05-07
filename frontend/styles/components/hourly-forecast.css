@@ -16,6 +16,7 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  padding: 4px 0;
 }
 
 .forecast-scroll::-webkit-scrollbar {
@@ -29,6 +30,7 @@
 }
 
 .forecast-card {
+  position: relative;
   backdrop-filter: blur(20px);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -41,11 +43,33 @@
   gap: 12px;
   transition: all 0.3s ease;
   cursor: pointer;
+  overflow: hidden;
+}
+
+.forecast-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.forecast-card:hover::before {
+  opacity: 1;
 }
 
 .forecast-card:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .forecast-day {
@@ -54,18 +78,29 @@
   font-weight: 600;
   text-transform: capitalize;
   opacity: 0.9;
+  position: relative;
+  z-index: 1;
 }
 
 .forecast-icon {
   color: white;
   opacity: 0.95;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.forecast-card:hover .forecast-icon {
+  transform: scale(1.1);
 }
 
 .forecast-temps {
   display: flex;
   gap: 12px;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .temp-max {
@@ -88,6 +123,9 @@
   padding: 4px 8px;
   background: rgba(78, 205, 196, 0.2);
   border-radius: 8px;
+  position: relative;
+  z-index: 1;
+  backdrop-filter: blur(10px);
 }
 
 @media (max-width: 768px) {

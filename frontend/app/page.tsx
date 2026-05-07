@@ -7,6 +7,7 @@ import HeroSection from '@/components/weather/HeroSection';
 import WeatherCards from '@/components/weather/WeatherCards';
 import TemperatureChart from '@/components/charts/TemperatureChart';
 import HourlyForecast from '@/components/weather/HourlyForecast';
+import BackgroundParticles from '@/components/effects/BackgroundParticles';
 import { api, SensorReading, ForecastData } from '@/services/api';
 import '@/styles/pages/home.css';
 
@@ -58,7 +59,6 @@ export default function Home() {
       return;
     }
 
-    // Simular condição climática baseada em umidade
     if (sensorData.umidade > 80) {
       setWeatherTheme('rainy');
     } else if (sensorData.umidade > 60) {
@@ -83,6 +83,8 @@ export default function Home() {
   return (
     <div className={`home-container theme-${weatherTheme}`}>
       <div className="background-gradient" />
+      <BackgroundParticles weatherTheme={weatherTheme} />
+      
       <div className="content-wrapper">
         <Header city="São Paulo" weatherTheme={weatherTheme} />
         
