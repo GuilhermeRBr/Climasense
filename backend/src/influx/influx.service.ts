@@ -40,12 +40,22 @@ export class InfluxService implements OnModuleInit {
    * @param deviceId - Device identifier
    * @param temperatura - Temperature value
    * @param umidade - Humidity value
+   * @param pressao - Atmospheric pressure (optional)
+   * @param velocidadeVento - Wind speed (optional)
+   * @param direcaoVento - Wind direction (optional)
+   * @param chuva - Rainfall (optional)
+   * @param luminosidade - Luminosity (optional)
    * @param timestamp - Data timestamp
    */
   async writeSensorData(
     deviceId: string,
     temperatura: number,
     umidade: number,
+    pressao?: number,
+    velocidadeVento?: number,
+    direcaoVento?: number,
+    chuva?: number,
+    luminosidade?: number,
     timestamp?: Date,
   ): Promise<void> {
     try {
@@ -54,17 +64,38 @@ export class InfluxService implements OnModuleInit {
       this.logger.log(`Writing data for device: ${deviceId}`);
       this.logger.log(`  Temperature: ${temperatura}°C`);
       this.logger.log(`  Humidity: ${umidade}%`);
+      if (pressao !== undefined) this.logger.log(`  Pressure: ${pressao} hPa`);
+      if (velocidadeVento !== undefined) this.logger.log(`  Wind Speed: ${velocidadeVento} km/h`);
+      if (direcaoVento !== undefined) this.logger.log(`  Wind Direction: ${direcaoVento}°`);
+      if (chuva !== undefined) this.logger.log(`  Rainfall: ${chuva} mm`);
+      if (luminosidade !== undefined) this.logger.log(`  Luminosity: ${luminosidade}%`);
       this.logger.log(`  Timestamp: ${ts.toISOString()}`);
 
-      const point = new Point('sensor_data')
-        .tag('device_id', deviceId)
+      const point = new Point('clima')
+        .tag('deviceId', deviceId)
         .floatField('temperatura', temperatura)
-        .floatField('umidade', umidade)
-        .timestamp(ts);
+        .floatField('umidade', umidade);
+
+      if (pressao !== undefined) {
+        point.floatField('pressao', pressao);
+      }
+      if (velocidadeVento !== undefined) {
+        point.floatField('velocidade_vento', velocidadeVento);
+      }
+      if (direcaoVento !== undefined) {
+        point.floatField('direcao_vento', direcaoVento);
+      }
+      if (chuva !== undefined) {
+        point.floatField('chuva', chuva);
+      }
+      if (luminosidade !== undefined) {
+        point.floatField('luminosidade', luminosidade);
+      }
+
+      point.timestamp(ts);
 
       this.writeApi.writePoint(point);
       
-      // Force flush to ensure data is written immediately
       await this.writeApi.flush();
 
       this.logger.log(`✓ Data successfully written to InfluxDB for device: ${deviceId}`);
@@ -87,13 +118,13 @@ export class InfluxService implements OnModuleInit {
   ): Promise<any[]> {
     try {
       const deviceFilter = deviceId
-        ? `|> filter(fn: (r) => r.device_id == "${deviceId}")`
+        ? `|> filter(fn: (r) => r.deviceId == "${deviceId}")`
         : '';
 
       const fluxQuery = `
         from(bucket: "${this.bucket}")
           |> range(start: ${range})
-          |> filter(fn: (r) => r._measurement == "sensor_data")
+          |> filter(fn: (r) => r._measurement == "clima")
           ${deviceFilter}
           |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
       `;
@@ -105,9 +136,14 @@ export class InfluxService implements OnModuleInit {
           next: (row, tableMeta) => {
             const record = tableMeta.toObject(row);
             data.push({
-              deviceId: record.device_id,
+              deviceId: record.deviceId,
               temperatura: record.temperatura,
               umidade: record.umidade,
+              pressao: record.pressao,
+              velocidadeVento: record.velocidade_vento,
+              direcaoVento: record.direcao_vento,
+              chuva: record.chuva,
+              luminosidade: record.luminosidade,
               timestamp: record._time,
             });
           },
@@ -137,8 +173,8 @@ export class InfluxService implements OnModuleInit {
       const fluxQuery = `
         from(bucket: "${this.bucket}")
           |> range(start: -7d)
-          |> filter(fn: (r) => r._measurement == "sensor_data")
-          |> filter(fn: (r) => r.device_id == "${deviceId}")
+          |> filter(fn: (r) => r._measurement == "clima")
+          |> filter(fn: (r) => r.deviceId == "${deviceId}")
           |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")
           |> sort(columns: ["_time"], desc: true)
           |> limit(n: 1)
@@ -151,9 +187,14 @@ export class InfluxService implements OnModuleInit {
           next: (row, tableMeta) => {
             const record = tableMeta.toObject(row);
             latestData = {
-              deviceId: record.device_id,
+              deviceId: record.deviceId,
               temperatura: record.temperatura,
               umidade: record.umidade,
+              pressao: record.pressao,
+              velocidadeVento: record.velocidade_vento,
+              direcaoVento: record.direcao_vento,
+              chuva: record.chuva,
+              luminosidade: record.luminosidade,
               timestamp: record._time,
             };
           },

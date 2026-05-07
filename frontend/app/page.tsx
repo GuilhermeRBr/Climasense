@@ -146,10 +146,10 @@ export default function Home() {
           <motion.div variants={itemVariants}>
             <CurrentConditions
               humidity={sensorData?.umidade || 0}
-              luminosity={75}
-              pressure={1013}
-              windSpeed={12.5}
-              rainfall={0}
+              luminosity={sensorData?.luminosidade || 75}
+              pressure={sensorData?.pressao || 1013}
+              windSpeed={sensorData?.velocidadeVento || 12.5}
+              rainfall={sensorData?.chuva || 0}
               sensorStatus="online"
               weatherTheme={weatherTheme}
             />
@@ -157,8 +157,8 @@ export default function Home() {
 
           <motion.div variants={itemVariants}>
             <WindPanel
-              speed={12.5}
-              direction={180}
+              speed={sensorData?.velocidadeVento || 12.5}
+              direction={sensorData?.direcaoVento || 180}
               weatherTheme={weatherTheme}
             />
           </motion.div>
@@ -166,16 +166,24 @@ export default function Home() {
           <div className="panels-grid">
             <motion.div variants={itemVariants}>
               <RainfallPanel
-                current={0}
-                dailyTotal={0}
-                intensity="none"
+                current={sensorData?.chuva || 0}
+                dailyTotal={sensorData?.chuva || 0}
+                intensity={
+                  !sensorData?.chuva || sensorData.chuva === 0
+                    ? 'none'
+                    : sensorData.chuva < 2
+                    ? 'light'
+                    : sensorData.chuva < 10
+                    ? 'moderate'
+                    : 'heavy'
+                }
                 weatherTheme={weatherTheme}
               />
             </motion.div>
 
             <motion.div variants={itemVariants}>
               <LuminosityPanel
-                luminosity={75}
+                luminosity={sensorData?.luminosidade || 75}
                 weatherTheme={weatherTheme}
               />
             </motion.div>

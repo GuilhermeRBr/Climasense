@@ -45,11 +45,11 @@ export class SensorController {
   @ApiOperation({
     summary: 'Receber dados dos sensores',
     description:
-      'Endpoint para recepção de dados de temperatura e umidade dos dispositivos ESP32/Mock. Os dados são validados e armazenados no InfluxDB. Requer autenticação via API Key no header X-API-Key.',
+      'Endpoint para recepção de dados climáticos completos dos dispositivos ESP32/Mock. Suporta temperatura, umidade, pressão, vento, chuva e luminosidade. Os dados são validados e armazenados no InfluxDB. Requer autenticação via API Key no header X-API-Key.',
   })
   @ApiBody({
     type: SensorDataDto,
-    description: 'Dados do sensor a serem armazenados',
+    description: 'Dados climáticos completos do sensor',
   })
   @ApiResponse({
     status: 201,

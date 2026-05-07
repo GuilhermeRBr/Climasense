@@ -4,6 +4,11 @@ export interface SensorData {
   deviceId: string;
   temperatura: number;
   umidade: number;
+  pressao?: number;
+  velocidadeVento?: number;
+  direcaoVento?: number;
+  chuva?: number;
+  luminosidade?: number;
   timestamp: string;
 }
 
@@ -11,6 +16,11 @@ export interface SensorReading {
   deviceId: string;
   temperatura: number;
   umidade: number;
+  pressao?: number;
+  velocidadeVento?: number;
+  direcaoVento?: number;
+  chuva?: number;
+  luminosidade?: number;
   timestamp: string;
 }
 
@@ -54,7 +64,6 @@ export const api = {
     
     const data = await response.json();
     
-    // Check if data is empty or null
     if (!data || Object.keys(data).length === 0) {
       return null;
     }
