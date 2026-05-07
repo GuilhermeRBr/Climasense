@@ -1,0 +1,210 @@
+.atmospheric-hero {
+  position: relative;
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  overflow: hidden;
+}
+
+.hero-background-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.theme-sunny .hero-background-glow {
+  background: radial-gradient(circle, rgba(255, 230, 109, 0.6) 0%, transparent 70%);
+}
+
+.theme-cloudy .hero-background-glow {
+  background: radial-gradient(circle, rgba(149, 184, 209, 0.6) 0%, transparent 70%);
+}
+
+.theme-rainy .hero-background-glow {
+  background: radial-gradient(circle, rgba(100, 149, 237, 0.6) 0%, transparent 70%);
+}
+
+.theme-night .hero-background-glow {
+  background: radial-gradient(circle, rgba(138, 180, 248, 0.6) 0%, transparent 70%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  max-width: 600px;
+  width: 100%;
+}
+
+.hero-location {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.location-city {
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.location-time {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 1px;
+}
+
+.hero-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.hero-icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.hero-icon-glow {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  z-index: 0;
+}
+
+.theme-sunny .hero-icon-glow {
+  background: radial-gradient(circle, rgba(255, 230, 109, 0.4) 0%, transparent 70%);
+}
+
+.theme-cloudy .hero-icon-glow {
+  background: radial-gradient(circle, rgba(149, 184, 209, 0.4) 0%, transparent 70%);
+}
+
+.theme-rainy .hero-icon-glow {
+  background: radial-gradient(circle, rgba(100, 149, 237, 0.4) 0%, transparent 70%);
+}
+
+.theme-night .hero-icon-glow {
+  background: radial-gradient(circle, rgba(138, 180, 248, 0.4) 0%, transparent 70%);
+}
+
+.hero-icon {
+  position: relative;
+  z-index: 1;
+  color: white;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.3));
+}
+
+.hero-temperature {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.temperature-value {
+  font-size: 120px;
+  font-weight: 200;
+  line-height: 1;
+  color: white;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.8) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+  letter-spacing: -4px;
+}
+
+.temperature-unit {
+  font-size: 48px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 8px;
+}
+
+.hero-condition {
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.95);
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.hero-feels-like {
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+}
+
+.hero-decorative-line {
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 50%, transparent 100%);
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+  .atmospheric-hero {
+    min-height: 400px;
+    padding: 40px 16px;
+  }
+
+  .location-city {
+    font-size: 20px;
+  }
+
+  .location-time {
+    font-size: 14px;
+  }
+
+  .hero-icon {
+    width: 80px;
+    height: 80px;
+  }
+
+  .hero-icon-glow {
+    width: 150px;
+    height: 150px;
+  }
+
+  .temperature-value {
+    font-size: 80px;
+    letter-spacing: -2px;
+  }
+
+  .temperature-unit {
+    font-size: 32px;
+  }
+
+  .hero-condition {
+    font-size: 18px;
+  }
+
+  .hero-feels-like {
+    font-size: 14px;
+  }
+}
