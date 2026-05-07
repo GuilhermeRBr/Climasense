@@ -2,18 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Header from '@/components/layout/Header';
-import HeroSection from '@/components/weather/HeroSection';
-import WeatherCards from '@/components/weather/WeatherCards';
+import AtmosphericHero from '@/components/weather/AtmosphericHero';
+import CurrentConditions from '@/components/weather/CurrentConditions';
+import WindPanel from '@/components/weather/WindPanel';
 import TemperatureChart from '@/components/charts/TemperatureChart';
 import HourlyForecast from '@/components/weather/HourlyForecast';
 import BackgroundParticles from '@/components/effects/BackgroundParticles';
 import LoadingScreen from '@/components/loading/LoadingScreen';
 import RefreshIndicator from '@/components/effects/RefreshIndicator';
 import ThemeTransition from '@/components/effects/ThemeTransition';
-import SkeletonCard from '@/components/loading/SkeletonCard';
 import { api, SensorReading, ForecastData } from '@/services/api';
 import '@/styles/pages/home.css';
+import '@/styles/components/atmospheric-hero.css';
+import '@/styles/components/current-conditions.css';
+import '@/styles/components/wind-panel.css';
 
 export default function Home() {
   const [sensorData, setSensorData] = useState<SensorReading | null>(null);
@@ -120,39 +122,35 @@ export default function Home() {
         initial="hidden"
         animate="visible"
       >
-        <motion.div variants={itemVariants}>
-          <Header city="São Paulo" weatherTheme={weatherTheme} />
-        </motion.div>
-        
         <main className="main-content">
           <motion.div variants={itemVariants}>
-            <HeroSection 
+            <AtmosphericHero
               temperature={sensorData?.temperatura || 0}
-              condition="Parcialmente Nublado"
               feelsLike={sensorData?.temperatura ? sensorData.temperatura - 2 : 0}
+              condition="Parcialmente Nublado"
+              city="São Paulo"
               weatherTheme={weatherTheme}
             />
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <AnimatePresence mode="wait">
-              {sensorData ? (
-                <WeatherCards 
-                  key="weather-cards"
-                  humidity={sensorData.umidade}
-                  luminosity={75}
-                  rainfall={0}
-                  sensorStatus="online"
-                  weatherTheme={weatherTheme}
-                />
-              ) : (
-                <div className="cards-grid" key="skeleton-cards">
-                  {[1, 2, 3, 4].map((i) => (
-                    <SkeletonCard key={i} />
-                  ))}
-                </div>
-              )}
-            </AnimatePresence>
+            <CurrentConditions
+              humidity={sensorData?.umidade || 0}
+              luminosity={75}
+              pressure={1013}
+              windSpeed={12.5}
+              rainfall={0}
+              sensorStatus="online"
+              weatherTheme={weatherTheme}
+            />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <WindPanel
+              speed={12.5}
+              direction={180}
+              weatherTheme={weatherTheme}
+            />
           </motion.div>
 
           <motion.div variants={itemVariants}>
