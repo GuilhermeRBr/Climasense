@@ -1,0 +1,36 @@
+.refresh-indicator {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.refresh-indicator svg {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .refresh-indicator {
+    top: 70px;
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+
+  .refresh-indicator svg {
+    width: 14px;
+    height: 14px;
+  }
+}
