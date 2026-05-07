@@ -7,7 +7,7 @@ import CurrentConditions from '@/components/weather/CurrentConditions';
 import WindPanel from '@/components/weather/WindPanel';
 import RainfallPanel from '@/components/weather/RainfallPanel';
 import LuminosityPanel from '@/components/weather/LuminosityPanel';
-import TemperatureChart from '@/components/charts/TemperatureChart';
+import AdvancedHistory from '@/components/charts/AdvancedHistory';
 import HourlyForecast from '@/components/weather/HourlyForecast';
 import BackgroundParticles from '@/components/effects/BackgroundParticles';
 import LoadingScreen from '@/components/loading/LoadingScreen';
@@ -20,6 +20,9 @@ import '@/styles/components/current-conditions.css';
 import '@/styles/components/wind-panel.css';
 import '@/styles/components/rainfall-panel.css';
 import '@/styles/components/luminosity-panel.css';
+import '@/styles/components/period-filter.css';
+import '@/styles/components/metric-selector.css';
+import '@/styles/components/advanced-history.css';
 
 export default function Home() {
   const [sensorData, setSensorData] = useState<SensorReading | null>(null);
@@ -176,7 +179,7 @@ export default function Home() {
           </div>
 
           <motion.div variants={itemVariants}>
-            <TemperatureChart 
+            <AdvancedHistory 
               data={historicalData}
               weatherTheme={weatherTheme}
             />
