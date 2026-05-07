@@ -8,7 +8,8 @@ import WindPanel from '@/components/weather/WindPanel';
 import RainfallPanel from '@/components/weather/RainfallPanel';
 import LuminosityPanel from '@/components/weather/LuminosityPanel';
 import AdvancedHistory from '@/components/charts/AdvancedHistory';
-import HourlyForecast from '@/components/weather/HourlyForecast';
+import PremiumForecast from '@/components/weather/PremiumForecast';
+import WeatherInsights from '@/components/weather/WeatherInsights';
 import BackgroundParticles from '@/components/effects/BackgroundParticles';
 import LoadingScreen from '@/components/loading/LoadingScreen';
 import RefreshIndicator from '@/components/effects/RefreshIndicator';
@@ -23,6 +24,8 @@ import '@/styles/components/luminosity-panel.css';
 import '@/styles/components/period-filter.css';
 import '@/styles/components/metric-selector.css';
 import '@/styles/components/advanced-history.css';
+import '@/styles/components/premium-forecast.css';
+import '@/styles/components/weather-insights.css';
 
 export default function Home() {
   const [sensorData, setSensorData] = useState<SensorReading | null>(null);
@@ -179,6 +182,14 @@ export default function Home() {
           </div>
 
           <motion.div variants={itemVariants}>
+            <WeatherInsights
+              currentData={sensorData}
+              historicalData={historicalData}
+              weatherTheme={weatherTheme}
+            />
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
             <AdvancedHistory 
               data={historicalData}
               weatherTheme={weatherTheme}
@@ -186,7 +197,7 @@ export default function Home() {
           </motion.div>
 
           <motion.div variants={itemVariants}>
-            <HourlyForecast 
+            <PremiumForecast 
               forecast={forecast}
               weatherTheme={weatherTheme}
             />
