@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Sun, Cloud, CloudRain, Moon } from 'lucide-react';
+import AnimatedNumber from '@/components/effects/AnimatedNumber';
 import '@/styles/components/hero-section.css';
 
 interface HeroSectionProps {
@@ -39,11 +40,12 @@ export default function HeroSection({
           animate={{
             rotate: weatherTheme === 'sunny' ? [0, 360] : 0,
             y: weatherTheme === 'cloudy' ? [0, -10, 0] : 0,
+            scale: weatherTheme === 'rainy' ? [1, 1.05, 1] : 1,
           }}
           transition={{
             duration: weatherTheme === 'sunny' ? 20 : 3,
             repeat: Infinity,
-            ease: 'linear',
+            ease: weatherTheme === 'sunny' ? 'linear' : 'easeInOut',
           }}
         >
           <WeatherIcon className="weather-icon" size={80} />
@@ -55,7 +57,10 @@ export default function HeroSection({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <span className="temperature-value">{Math.round(temperature)}</span>
+          <AnimatedNumber 
+            value={Math.round(temperature)} 
+            className="temperature-value"
+          />
           <span className="temperature-unit">°C</span>
         </motion.div>
 
@@ -74,7 +79,7 @@ export default function HeroSection({
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.8 }}
         >
-          Sensação térmica {Math.round(feelsLike)}°C
+          Sensação térmica <AnimatedNumber value={Math.round(feelsLike)} />°C
         </motion.p>
       </div>
     </motion.section>
