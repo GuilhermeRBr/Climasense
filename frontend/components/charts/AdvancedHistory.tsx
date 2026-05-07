@@ -37,7 +37,7 @@ export default function AdvancedHistory({ data, weatherTheme }: AdvancedHistoryP
         label: 'Pressão',
       },
       wind: {
-        dataKey: 'vento',
+        dataKey: 'velocidadeVento',
         unit: 'km/h',
         color: '#34D399',
         label: 'Vento',
